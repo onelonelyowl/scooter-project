@@ -8,12 +8,13 @@ class ScooterApp {
   }
   registerUser(username, password, age){
     if(age < 18) throw "Too young to register" // checks age
+    let keys = Object.keys(this.registeredUsers)
     for(const user in this.registeredUsers){
       if(username == user) throw "already registered" // checks already registered
     }
-    this.registeredUsers.username = new User(username, password, age) // adds user
+    this.registeredUsers[username] = new User(username, password, age) // adds user
     console.log("user has been registered") 
-    return this.registeredUsers.username
+    return this.registeredUsers[username]
   }
   loginUser(username, password){
     try{
