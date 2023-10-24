@@ -12,10 +12,4 @@ class User {
     this.loggedIn = false;
   }
 }
-
-module.exports = User
-class User {
-  // User code here
-}
-
 module.exports = User

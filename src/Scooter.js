@@ -1,9 +1,12 @@
 let counter = 0;
+let nextSerial = 0;
 class Scooter{
+  static nextSerial = 1;
   constructor(station){
     this.station = station;
     this.user = null;
-    this.serial = nextSerial()
+    this.serial = nextSerial;
+    nextSerial++
     this.charge = 100;
     this.isBroken = false;
   }
@@ -33,12 +36,4 @@ class Scooter{
     console.log('Charge complete');   
   }
 }
-
-
-module.exports = Scooter
-class Scooter{
-  // scooter code here
-}
-
-
 module.exports = Scooter

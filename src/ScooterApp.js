@@ -2,26 +2,18 @@ const User = require('./User')
 const Scooter = require('./Scooter')
 
 class ScooterApp {
-  // ScooterApp code here
-}
-
-module.exports = ScooterApp
-const User = require('./User')
-const Scooter = require('./Scooter')
-
-class ScooterApp {
   constructor(){
     this.stations = {brentford: [], ealing: [], acton: []}
     this.registeredUsers = {}
   }
   registerUser(username, password, age){
     if(age < 18) throw "Too young to register" // checks age
-    for(user in this.registeredUsers){
+    for(const user in this.registeredUsers){
       if(username == user) throw "already registered" // checks already registered
     }
-    this.registeredUsers.name = new User(username, password, age) // adds user
+    this.registeredUsers.username = new User(username, password, age) // adds user
     console.log("user has been registered") 
-    return this.registeredUsers.name
+    return this.registeredUsers.username
   }
   loginUser(username, password){
     try{
@@ -43,14 +35,15 @@ class ScooterApp {
   }
   createScooter(station){
     let stationFound = false;
-    for(const x in stations){
+    for(const x in this.stations){
       if(x === station){
         stationFound = true;
+        this.stations[x].push(new Scooter(x))
+        console.log("created new scooter")
       }
     }
     if(stationFound === false) throw "no such station"
-    let scooter = new Scooter(station)
-    console.log("created new scooter")
+    
   }
   dockScooter(scooter, station){
     let stationFound = false;
