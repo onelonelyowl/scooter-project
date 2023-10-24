@@ -36,3 +36,9 @@ class Scooter{
 
 
 module.exports = Scooter
+class Scooter{
+  // scooter code here
+}
+
+
+module.exports = Scooter

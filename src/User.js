@@ -14,3 +14,8 @@ class User {
 }
 
 module.exports = User
+class User {
+  // User code here
+}
+
+module.exports = User

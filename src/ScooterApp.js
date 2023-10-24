@@ -2,6 +2,14 @@ const User = require('./User')
 const Scooter = require('./Scooter')
 
 class ScooterApp {
+  // ScooterApp code here
+}
+
+module.exports = ScooterApp
+const User = require('./User')
+const Scooter = require('./Scooter')
+
+class ScooterApp {
   constructor(){
     this.stations = {brentford: [], ealing: [], acton: []}
     this.registeredUsers = {}
