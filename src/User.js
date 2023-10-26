@@ -5,10 +5,14 @@ class User {
     this.age = age;
     this.loggedIn = false;
   }
-  login(password){
-    // if password is correct, turn loggedin to true, else throw incorrect password error
+  login(passedPassword){
+    if(passedPassword !== this.password) throw "Incorrect password"
+    else{
+      this.loggedIn = true;
+    }
   }
   logout(){
+    if(this.loggedIn = false) throw "user is already logged out"
     this.loggedIn = false;
   }
 }

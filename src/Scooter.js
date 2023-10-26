@@ -1,18 +1,12 @@
-let counter = 0;
-let nextSerial = 0;
 class Scooter{
   static nextSerial = 1;
   constructor(station){
     this.station = station;
     this.user = null;
-    this.serial = nextSerial;
-    nextSerial++
+    this.serial = Scooter.nextSerial;
+    Scooter.nextSerial++
     this.charge = 100;
     this.isBroken = false;
-  }
-  static nextSerial(){
-    counter++
-    return counter;
   }
   rent(user){
     // check for >20% charge and not broken, then link to scooterapp to rent to the user.

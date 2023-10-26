@@ -17,22 +17,20 @@ class ScooterApp {
     return this.registeredUsers[username]
   }
   loginUser(username, password){
-    try{
     let user = this.registeredUsers[username]
+    if(user.loggedIn === true) throw "user is already logged in"
+    try{
     user.login(password)
     }
     catch(err){
-      throw "username or password is incorrect"
+      throw "user login function failed"
     }
   }
   logoutUser(username){
-    try{
-      let user = this.registeredUsers[username]
-      user.logout()
-    }
-    catch(err){
-      throw "no such user is logged in"
-    }
+    let user = this.registeredUsers[username]
+    if(user === null || user === undefined) throw "user not found"
+    if(user.loggedIn === false) throw "user is already logged out"
+    user.logout()
   }
   createScooter(station){
     let stationFound = false;
@@ -44,7 +42,6 @@ class ScooterApp {
       }
     }
     if(stationFound === false) throw "no such station"
-    
   }
   dockScooter(scooter, station){
     let stationFound = false;
