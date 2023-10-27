@@ -1,0 +1,38 @@
+bigchecklist
+
+PRESENTATION REQUIRES TOUCHING ON:
+DESIGN/PLANNING
+made uml diagrams,
+set up a git repo by cloning the multiverse one,
+i went class by class making functions, then made the tests, then used the tests to refine my functions
+
+IMPLEMENTATION
+what am i the most proud of, what was most difficult, what did i learn about coding?
+
+show an example of debating between using this.stations from inside scooterapp or using ScooterApp.stations outside of the class and debating which to use.
+
+TESTING
+how did I test this app? i used jest, also used debugger in vscode
+used console.log and the print function also
+
+from async testing we can see that the requestRepair function takes 5s, and recharge takes 2s, as expected
+
+i found out from testing my makeRepair function that the default timeout for tests is 5000ms, which i then increased to accomodate for this function as it will last 5s at a minimum
+
+scooters can be repaired and recharged asynchronously,
+and messages logged to console report specifically what users are registered, logged in, scooters are docked, rented etc.
+
+SCREENSHOTS ONLY NO LIVE CODE
+put these in a doc and talk them through it
+about 3 minutes
+
+i forgot that static variables  need to be referred to with the class first instead of just on their own (e.g. in scooter when i had to change #nextSerial++ to Scooter.#nextSerial++)
+when testing i used my own js file as well as the jest tests, as sometimes it is hard to log stuff whilst dealign with all the jest tests at once
+i had many issues
+
+when testing my nextSerial function i forgot that as a static variable, all the scooters created in the scooterapps i had created before also contributed to the contributed
+count. therefore my serial number for my second scooter was 5, as i had already created 5 scooters in my previous tests up to that point even though they were
+in different scooterapps. To solve this i just moved the serial test to the top of the function, if I had to test more than one static variable and it would interfere
+i would probably just test them in different files to be safe, or make sure to reset the static variable at the start of all tests to get the expected output
+
+

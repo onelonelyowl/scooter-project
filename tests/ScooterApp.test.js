@@ -2,6 +2,21 @@ const Scooter = require('../src/Scooter')
 const User = require('../src/User')
 const ScooterApp = require('../src/ScooterApp')
 
+// scooterapp creates scooterapp instance
+describe('checking constructor for scooterapp', () => {
+  test('ScooterApp class should create ScooterApp instance', () => {
+    const testApp = new ScooterApp()
+    expect(testApp).toBeInstanceOf(ScooterApp);
+  })
+  test('stations is initalised correctly', () => {
+    const testApp = new ScooterApp()
+    expect(testApp.stations).toEqual({brentford: [], ealing: [], acton: []})
+  })
+  test('registeredusers is initalised correctly', () => {
+    const testApp = new ScooterApp()
+    expect(testApp.registeredUsers).toEqual({})
+  })
+})
 
 // register user
 describe("registerUser method tests", () => {
@@ -89,7 +104,7 @@ describe("testing loginUser() method", () => {
 
 
 //logOut()
-describe('testing ScooterApp.logOut()', () => {
+describe('testing logoutUser() method', () => {
   test('logs out user who is logged in successfully', () => {
     const testApp = new ScooterApp()
     let joebloggs = testApp.registerUser("Joe Bloggs", "test123", 21)
@@ -99,7 +114,7 @@ describe('testing ScooterApp.logOut()', () => {
   })
   test('throws when trying to logout a user who is not logged in', () => {
     const testApp = new ScooterApp()
-    let joebloggs = testApp.registerUser("Joe Bloggs", "test123", 21)
+    testApp.registerUser("Joe Bloggs", "test123", 21)
     expect(() => testApp.logoutUser("Joe Bloggs")).toThrow()
   })
   test('throws when passing an invalid name', () => {
@@ -111,18 +126,63 @@ describe('testing ScooterApp.logOut()', () => {
 
 // rent scooter
 describe('testing rentScooter()', () => {
-  test('test1', ()=> {
-
+  test('works with all parameters being correct', () => {
+    const testApp = new ScooterApp()
+    let user = testApp.registerUser("Joe Bloggs", "test123", 21)
+    testApp.createScooter("ealing")
+    let scooter = testApp.stations["ealing"][0]
+    testApp.rentScooter(scooter, user)
+    expect(scooter.user).toBe(user)
   })
-
+  test('throws an error when trying to rent a scooter that is not at a station', () => {
+    const testApp = new ScooterApp()
+    let user1 = testApp.registerUser("Joe Bloggs", "test123", 21)
+    let user2 = testApp.registerUser("Joe Bloggs the Second", "test123", 21)
+    testApp.createScooter("ealing")
+    let scooter1 = testApp.stations["ealing"][0]
+    testApp.rentScooter(scooter1, user1)
+    expect(() => testApp.rentScooter(scooter1, user2)).toThrow()
+  })
+  test('throws an error when trying to rent a scooter to a user that does not exist', () => {
+    const testApp = new ScooterApp()
+    let user1 = testApp.registerUser("Joe Bloggs", "test123", 21)
+    let user2 = testApp.registerUser("Joe Bloggs the Second", "test123", 21)
+    testApp.createScooter("ealing")
+    let scooter1 = testApp.stations["ealing"][0]
+    testApp.rentScooter(scooter1, user1)
+    expect(() => testApp.rentScooter(scooter1, user2)).toThrow()
+  })
 })
 
 
 // dock scooter
 describe('testing dockScooter()', () => {
-  test('test1', ()=> {
-    
+  test('docks scooter when everything is in order', ()=> {
+    const testApp = new ScooterApp()
+    let user = testApp.registerUser("Joe Bloggs", "test123", 21)
+    testApp.createScooter("ealing")
+    let scooter = testApp.stations["ealing"][0]
+    testApp.rentScooter(scooter, user)
+    testApp.dockScooter(scooter, "brentford")
+    expect(scooter.station).toBe("brentford")
   })
+  //MAKE TEST SO SCOOTER CANNOT BE DOCKED IF IT IS ALREADY DOCKED AT STATION
 
 })
+const mockConsoleLog = jest.fn()
+global.console.log = mockConsoleLog
+describe('testing print()', () => {
+  test('testing print()', () => {
+    const testApp = new ScooterApp()
+    testApp.registerUser("Joe Bloggs", "test123", 21)
+    testApp.registerUser("Joe Bloggs2", "test123", 21)
+    testApp.registerUser("Joe Bloggs3", "test123", 21)
+    testApp.createScooter("brentford")
+    testApp.createScooter("ealing")
+    testApp.createScooter("acton")
+    testApp.print()
+    expect(mockConsoleLog).toHaveBeenCalledWith('{"Joe Bloggs":{"username":"Joe Bloggs","password":"test123","age":21,"loggedIn":false},"Joe Bloggs2":{"username":"Joe Bloggs2","password":"test123","age":21,"loggedIn":false},"Joe Bloggs3":{"username":"Joe Bloggs3","password":"test123","age":21,"loggedIn":false}}')
+  })
+})
+  // i just can't write a testing function for print()
 

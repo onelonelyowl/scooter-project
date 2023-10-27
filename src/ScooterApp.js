@@ -13,7 +13,7 @@ class ScooterApp {
       if(username == user) throw "already registered" // checks already registered
     }
     this.registeredUsers[username] = new User(username, password, age) // adds user
-    console.log("user has been registered") 
+    console.log(`${username} has been registered`) 
     return this.registeredUsers[username]
   }
   loginUser(username, password){
@@ -38,14 +38,14 @@ class ScooterApp {
       if(x === station){
         stationFound = true;
         this.stations[x].push(new Scooter(x))
-        console.log("created new scooter")
+        console.log(`created new scooter with serial number #${x.serial}`)
       }
     }
     if(stationFound === false) throw "no such station"
   }
   dockScooter(scooter, station){
     let stationFound = false;
-    for(const x in stations){
+    for(const x in this.stations){
       if(x === station){
         stationFound = true;
       }
@@ -54,29 +54,29 @@ class ScooterApp {
     // need to check if a scooter matching that serial number is at this station already
     let scootersAtStation = this.stations[station]
     for(const x of scootersAtStation){
-      if(x.serial === scooter.serial) throw "scooter already at station"
+      if(x.serial === scooter.serial) throw "scooter already at station" // uncovered apparently
     }
+    scooter.dock(station)
     this.stations[station].push(scooter)
-    console.log("scooter is docked")
+    console.log(`scooter #${scooter.serial} has been docked at ${station}`)
   }
-  rentScooter(scooter, user){
+  rentScooter(scooter, user){ // need to implement a check that the user passed is a real user as opposed to just some string
     let foundScooter;
-    for(station of this.stations){
-      for(x of station){
+    for(const station in this.stations){
+      for(const x of this.stations[station]){
         if(x.serial === scooter.serial){
+          foundScooter = 1;
           let index = this.stations[station].indexOf(x)
-          this.stations[station].splice(index, 1)
-          x.user = user;
-        }
-        else{
-          throw "scooter already rented"
+          x.rent(user)
+          this.stations[station].splice(index, 1) // should i remove the scooter from the array using a static stations property or by using this (non-static but outside of scooter class)
+          console.log(`scooter #${scooter.serial} has been rented from ${station}`)
         }
       }
     }
-  }
+    if(foundScooter !== 1) throw "scooter is not present at any station"
+}
   print(){
-    console.log(this.registeredUsers)
-    console.table(this.stations)
+    console.log(JSON.stringify(this.registeredUsers, this.stations))
   }
 }
 

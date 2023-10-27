@@ -6,6 +6,7 @@ class User {
     this.loggedIn = false;
   }
   login(passedPassword){
+    if(this.loggedIn === true) throw "user is already logged in"
     if(passedPassword !== this.password) throw "Incorrect password"
     else{
       this.loggedIn = true;
