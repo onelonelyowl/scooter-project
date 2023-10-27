@@ -39,6 +39,18 @@ describe("registerUser method tests", () => {
     let response = testApp.registerUser("Joe Bloggs", "test123", 21);
     expect(response.loggedIn).toBe(false);
   });
+  test("throws if username is not a string", () => {
+    const testApp = new ScooterApp()
+    expect(() => testApp.registerUser(42, "test123", 21)).toThrow()
+  });
+  test("throws if password is not a string", () => {
+    const testApp = new ScooterApp()
+    expect(() => testApp.registerUser("Joe Cogs", 98321, 21)).toThrow()
+  });
+  test("throws if age is not a number", () => {
+    const testApp = new ScooterApp()
+    expect(() => testApp.registerUser("Joe Coggs", "test123", "peasant")).toThrow()
+  });
 });
 
 //createScooter()
@@ -129,6 +141,7 @@ describe('testing rentScooter()', () => {
   test('works with all parameters being correct', () => {
     const testApp = new ScooterApp()
     let user = testApp.registerUser("Joe Bloggs", "test123", 21)
+    testApp.loginUser("Joe Bloggs", "test123")
     testApp.createScooter("ealing")
     let scooter = testApp.stations["ealing"][0]
     testApp.rentScooter(scooter, user)
@@ -137,7 +150,9 @@ describe('testing rentScooter()', () => {
   test('throws an error when trying to rent a scooter that is not at a station', () => {
     const testApp = new ScooterApp()
     let user1 = testApp.registerUser("Joe Bloggs", "test123", 21)
+    testApp.loginUser("Joe Bloggs", "test123")
     let user2 = testApp.registerUser("Joe Bloggs the Second", "test123", 21)
+    testApp.loginUser("Joe Bloggs the Second", "test123")
     testApp.createScooter("ealing")
     let scooter1 = testApp.stations["ealing"][0]
     testApp.rentScooter(scooter1, user1)
@@ -147,10 +162,18 @@ describe('testing rentScooter()', () => {
     const testApp = new ScooterApp()
     let user1 = testApp.registerUser("Joe Bloggs", "test123", 21)
     let user2 = testApp.registerUser("Joe Bloggs the Second", "test123", 21)
+    testApp.loginUser("Joe Bloggs", "test123")
+    testApp.loginUser("Joe Bloggs the Second", "test123")
     testApp.createScooter("ealing")
     let scooter1 = testApp.stations["ealing"][0]
-    testApp.rentScooter(scooter1, user1)
-    expect(() => testApp.rentScooter(scooter1, user2)).toThrow()
+    expect(() => testApp.rentScooter(scooter1, "Joe Bloggs")).toThrow()
+  })
+  test('throws an error when trying to rent to a user who is not logged in', () => {
+    const testApp = new ScooterApp()
+    let user1 = testApp.registerUser("Joe Bloggs", "test123", 21)
+    testApp.createScooter("ealing")
+    let scooter1 = testApp.stations["ealing"][0]
+    expect(() => testApp.rentScooter(scooter1, user1)).toThrow()
   })
 })
 
@@ -160,13 +183,23 @@ describe('testing dockScooter()', () => {
   test('docks scooter when everything is in order', ()=> {
     const testApp = new ScooterApp()
     let user = testApp.registerUser("Joe Bloggs", "test123", 21)
+    testApp.loginUser("Joe Bloggs", "test123")
     testApp.createScooter("ealing")
     let scooter = testApp.stations["ealing"][0]
     testApp.rentScooter(scooter, user)
     testApp.dockScooter(scooter, "brentford")
     expect(scooter.station).toBe("brentford")
   })
-  //MAKE TEST SO SCOOTER CANNOT BE DOCKED IF IT IS ALREADY DOCKED AT STATION
+  test('throws an error if scooter is already docked at a station', () => {
+    const testApp = new ScooterApp()
+    let user = testApp.registerUser("Joe Bloggs", "test123", 21)
+    testApp.loginUser("Joe Bloggs", "test123")
+    testApp.createScooter("ealing")
+    let scooter = testApp.stations["ealing"][0]
+    testApp.rentScooter(scooter, user)
+    testApp.dockScooter(scooter, "brentford")
+    expect(() => testApp.dockScooter(scooter, "brentford")).toThrow()
+  })
 
 })
 const mockConsoleLog = jest.fn()

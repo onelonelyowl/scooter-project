@@ -22,6 +22,9 @@ i found out from testing my makeRepair function that the default timeout for tes
 scooters can be repaired and recharged asynchronously,
 and messages logged to console report specifically what users are registered, logged in, scooters are docked, rented etc.
 
+describe how private keys could be used for the passwords etc and getters/setters etc, along with static objects if I had time to add them, but wanted to avoid unnecessary complication
+another thing to add would be automatically calling recharge when the charge drops below 20% and automatically requesting repairs when the scooters are found to be broken
+
 SCREENSHOTS ONLY NO LIVE CODE
 put these in a doc and talk them through it
 about 3 minutes
